@@ -9,11 +9,15 @@ I did an php import code inside the html file and the javascript makes the filte
 
 Objectives:
 
-Make an easy way to publish a .csv file content.
+* Make an easy way to publish a .csv file content.
 
-Make possible to filter and search some information within.
+* Make possible to filter and search some information within.
 
-Make future stuff without php.
+* **Make future version without php**
 (So you can upload your information to a dropbox or googledrive
 folder and use it in an easy way). 
 
+Code used:
+
+- php: imports de csv file, parse the data and prints html code.
+- js: jquery and the extra function --> makes the filtering function. 
