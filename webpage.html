@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /> 
+
+<title>Untitled Document</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script><!-- NECESARIO PARA LA BUSQUEDA -->
+<script type="text/javascript" src="jquery_table.buscoloquemesaledelospeones.js"></script><!-- NECESARIO PARA LA BUSQUEDA -->
+
+<!-- JS QUE SE ENCARGA AL PRINCIPIO UNA VEZ LEIDO EL HTML EL CLIENTE (como el evento onload del body) -->
+<!--<script src="jquery-csv.js"></script>  ESTO LO HE COLOCADO YO -->
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#divTabla').buscoloquemesaledelospeones('inputFiltro');
+});
+</script>
+<link href="estilo.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="oneColElsCtrHdr">
+
+<div id="container">
+  <div id="header">
+    <h1> Tabla de información</h1>
+  <!-- end #header --></div>
+  <div id="mainContent">
+    
+    <h3>el campo de busqueda solo filtra una única cadena:</h3>
+    <p><strong>es decir:</strong> si pongo infancia para filtrar todo lo del sector, no puedo poner otra palabra, la busqueda se hace en una unica frase.</p>
+    
+	<div>
+		<span style="font-weight:bold;">Filtro de Búsqueda: </span>
+		<input id="inputFiltro" type="text" />
+	</div>
+	<hr /><!-- linea horizontal -->
+    
+    <center>
+    <table id="divTabla" cellpadding="5" cellspacing="0">
+    <tr id="titulo"><?php 
+    $archivo = fopen("https://dl.dropboxusercontent.com/u/5373401/acg_data/html/csvdata.csv",r);
+    if (!feof($archivo)){
+    	$linea = fgetcsv($archivo,0,";");
+        $i =  0;
+        while($i < count($linea))
+            {
+            	echo "<td id=\"col$i\">$linea[$i]</td>";
+            	$i = $i + 1;
+            }
+    }
+    ?>
+</tr>
+    <?php
+	$linea = fgetcsv($archivo,0,";");
+    while(!  feof($archivo))
+    	{
+        	echo "<tr>";
+            $i =  0;
+            while($i < count($linea))
+            {
+            	
+                	if (!stristr($linea[$i],"http:")) { // OJO FORMULACION PELIGROSA no puede haber enlaces en ningun otro campo.
+                	echo "<td>$linea[$i]</td>
+";
+            		$i = $i + 1;
+                	}
+                	else {   // si el contenido CONTIENE un enlace OJO FORMULACION PELIGROSA
+                		echo "<td><a href=\"$linea[$i]\">",substr($linea[$i],0,14),"</a></td>";
+                    	$i = $i + 1;
+                	}
+                
+            }
+            echo "</tr>
+";
+		$linea = fgetcsv($archivo,0,";");
+        } 
+    
+    fclose($archivo);
+    ?>
+    
+    </table>
+    
+    <hr />
+    </center>
+    <!-- end #mainContent -->
+  </div>
+  <div id="footer">
+    <p>Creative Commons.</p>
+  <!-- end #footer --></div>
+<!-- end #container --></div>
+</body>
+</html>
